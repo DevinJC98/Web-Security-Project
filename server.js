@@ -9,12 +9,15 @@ const bodyParser = require("body-parser");
 const authRoutes = require("./routes/auth");
 //env variables
 require("dotenv").config();
+//rbac
+const adminRoutes = require("./routes/admin");
 
 const helmet = require("helmet");
 
 app.use(bodyParser.json());
 
 app.use("/api/auth", authRoutes);
+app.use("/api/admin", adminRoutes);
 
 //default route/home page
 app.get("/", (req, res) => {
