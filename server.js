@@ -3,8 +3,18 @@ const https = require("https");
 const app = express();
 const fs = require("fs");
 const path = require("path");
+//auth and auth dependancies
+const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
+const authRoutes = require("./routes/auth");
+//env variables
+require("dotenv").config();
 
 const helmet = require("helmet");
+
+app.use(bodyParser.json());
+
+app.use("/api/auth", authRoutes);
 
 //default route/home page
 app.get("/", (req, res) => {
@@ -13,7 +23,6 @@ app.get("/", (req, res) => {
   res.set("CacheControl", "no-store");
   res.send("<h1>Default Route</h1>");
 });
-
 //Daily Quest Page
 app.get("/daily-quests", (req, res) => {
   console.log("Daily Quest Page");
@@ -21,7 +30,6 @@ app.get("/daily-quests", (req, res) => {
   res.set("CacheControl", "max-age=86400");
   res.send("<h1>Daily Quests</h1>");
 });
-
 //Weekly Quest Page
 app.get("/weekly-quests", (req, res) => {
   console.log("Weekly Quest Page");
@@ -29,7 +37,6 @@ app.get("/weekly-quests", (req, res) => {
   res.set("CacheControl", "max-age=604800");
   res.send("<h1>Weekly Quests</h1>");
 });
-
 //User Dashboard
 app.get("/user-dashboard", (req, res) => {
   console.log("user dashboard");
@@ -37,7 +44,6 @@ app.get("/user-dashboard", (req, res) => {
   res.set("CacheControl", "no-store");
   res.send("<h1>User Dashboard</h1>");
 });
-
 //About Page
 app.get("/about", (req, res) => {
   console.log("About Page");
@@ -49,7 +55,6 @@ app.get("/about", (req, res) => {
 //add basic middleware
 app.use(helmet()); // I will need to configure helmet more
 
-//add a password here?, why would i need to?
 const options = {
   cert: fs.readFileSync(path.join(__dirname, "./openssl/certificate.pem")),
   key: fs.readFileSync(path.join(__dirname, "./openssl/private-key.pem")),
@@ -59,7 +64,20 @@ const options = {
 try {
   https.createServer(options, app).listen(3000, () => {
     console.log("https server running on port 3000");
+    connectToDB();
   });
 } catch (err) {
   console.error(err);
+}
+
+//mongodb connection
+async function connectToDB() {
+  try {
+    await mongoose.connect(
+      process.env.DB_URL + "/" + process.env.DATABASE_NAME
+    );
+    console.log("connected to mongodb");
+  } catch (err) {
+    console.log("error connecting to MongoDB");
+  }
 }
