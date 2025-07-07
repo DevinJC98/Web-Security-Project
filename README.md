@@ -4,10 +4,25 @@ Dependancies
 
 - express 5.1.0
 - helmet 8.1.0
+- argon2 0.43.0
+- body-parser 2.2.0
+- connect-mongo 5.1.0
+- csurf 1.11.0
+- dotenv 17.0.1
+- express-session 1.18.1
+- jsonwebtoken 9.0.2
+- mongoose 8.16.1
 
 Testing Command
 
--"node server.js"
+- "node server.js"
+
+Phase 2 Reflection
+
+- during this phase of the project, i set up authentification and authorization capabilities for the server. passwords are hashed with argon2 and i implemented session management and rbac.
+- There are currently two roles set up. users and admins. currently this isn't relevant to any of the standard pages of the app, but there is a protected route for the admin user role.
+- One of the main challeges i faced was implementing sso capabilities. I missed two days of class which involved the labs where we would have learned how to use google oauth20, in the end i did not give myself enough time to properly break down the example code provided and impliment this and i had to leave sso out of my app for this phase.
+- throughout the process i primarily tested to routes and authentification using mongodb and postman to ensure that everything was working.
 
 Set-Up
 

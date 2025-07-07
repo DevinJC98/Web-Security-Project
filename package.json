@@ -12,8 +12,11 @@
   "dependencies": {
     "argon2": "^0.43.0",
     "body-parser": "^2.2.0",
+    "connect-mongo": "^5.1.0",
+    "csurf": "^1.11.0",
     "dotenv": "^17.0.1",
     "express": "^5.1.0",
+    "express-session": "^1.18.1",
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.16.1"

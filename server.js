@@ -11,6 +11,10 @@ const authRoutes = require("./routes/auth");
 require("dotenv").config();
 //rbac
 const adminRoutes = require("./routes/admin");
+//session management
+const session = require("express-session");
+const MongoStore = require("connect-mongo");
+const csrf = require("csurf");
 
 const helmet = require("helmet");
 
@@ -18,6 +22,31 @@ app.use(bodyParser.json());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/admin", adminRoutes);
+
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({
+      mongoUrl: process.env.DB_URL,
+      collectionName: "sessions",
+    }),
+    cookie: {
+      httpOnly: true,
+      secure: false,
+      maxAge: 1000 * 60 * 10,
+    },
+  })
+);
+
+const csrfProtection = csrf();
+app.use(csrfProtection);
+
+app.use((req, res, next) => {
+  res.locals.csrfToken = req.csrfToken();
+  next();
+});
 
 //default route/home page
 app.get("/", (req, res) => {
