@@ -1,6 +1,6 @@
 # Web-Security-Project
 
-Dependancies
+**Dependancies**
 
 - express 5.1.0
 - helmet 8.1.0
@@ -12,12 +12,31 @@ Dependancies
 - express-session 1.18.1
 - jsonwebtoken 9.0.2
 - mongoose 8.16.1
+- xss 1.0.15
+- ejs 3.1.10
 
-Testing Command
+**Testing instructions**
 
-- "node server.js"
+- clone the repository
+- click on the green code button in the repository in github.
+- open the repository through github desktop
+- set up the repository locally on your device & open with a code editor of your choice
+- open the terminal and cd into Web-Security-Project
+- install all the dependancies listed above using "npm i"
+- run the server with "node server.js"
 
-Phase 2 Reflection
+**Phase 3 reflection**
+
+- The first thing i had to do to get this phase started was display information on the user dashboard. This took signifigantly longer than i expected as my user returned undefined. It took a while to fix the issue and i wasted a lot of time handling logins through postman before i realized i needed to use a template editor like ejs.
+- with ejs i created two html pages. one for the default route that is used for logins, and a second for the user dashboard which is used to display and update user information.
+- both pages contain forms with links to routes. the /register route still uses postman to create the user, the /login route is now handled within a form at the default page, and a /update route has been created using a PUT request that is handled by the form on the user dashboard.
+- the dashboard.js file takes the token recieved on login, splits it, and decoded the payload to pull out specific pieces, which can then be displayed on the page.
+- each form has basic restrictions that define the type ad length of the inputs as well as regex patterns to restrict special characters
+- xss is used to sanitize inputs
+- after running npm audit, i found that the dependencies have 4 low severity vulnerabilities. this is not enough of a concern at the moment, but if the dependencies get more outdated in the future, it could raise more security concerns.
+- I am not sure how to address sql injection attacks, i still need to read more on the topic.
+
+**Phase 2 Reflection**
 
 - during this phase of the project, i set up authentification and authorization capabilities for the server. passwords are hashed with argon2 and i implemented session management and rbac.
 - There are currently two roles set up. users and admins. currently this isn't relevant to any of the standard pages of the app, but there is a protected route for the admin user role.

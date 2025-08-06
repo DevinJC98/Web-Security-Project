@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="csrfToken" content="<%= csrfToken %>" />
+    <title>User Dashboard</title>
+    <link rel="icon" href="" />
+  </head>
+
+  <body>
+    <h1 id="welcomeMessage"></h1>
+    <p id="userText"></p>
+
+    <form id="updateForm">
+      <label for="name">Name</label>
+      <input
+        type="text"
+        name="name"
+        minlength="3"
+        maxlength="50"
+        id="nameUpdate"
+        pattern="^[A-Za-z0-9 ]*$"
+      />
+      <label for="email">Email</label>
+      <input type="email" name="email" id="emailUpdate" minlength="5" />
+      <label for="textbox">About</label>
+      <input
+        type="text"
+        name="textbox"
+        id="textboxUpdate"
+        minlength="3"
+        maxlength="500"
+        pattern="^[A-Za-z0-9 ]*$"
+      />
+      <input type="submit" />
+    </form>
+
+    <script src="dashboard.js"></script>
+  </body>
+</html>

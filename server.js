@@ -17,8 +17,19 @@ const MongoStore = require("connect-mongo");
 const csrf = require("csurf");
 
 const helmet = require("helmet");
+const authMiddleware = require("./middleware/auth");
+
+//add basic middleware
+app.use(helmet()); // I will need to configure helmet more
+
+app.use(express.urlencoded({ extended: true }));
 
 app.use(bodyParser.json());
+
+app.use(express.static("public"));
+
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/admin", adminRoutes);
@@ -52,40 +63,40 @@ app.use((req, res, next) => {
 app.get("/", (req, res) => {
   console.log("app default route");
   //information is unlikely to be change and will not need to be cached
-  res.set("CacheControl", "no-store");
-  res.send("<h1>Default Route</h1>");
+  res.set("Cache-Control", "no-store");
+  res.render("index");
 });
 //Daily Quest Page
 app.get("/daily-quests", (req, res) => {
   console.log("Daily Quest Page");
   //cache information for 24 hours
-  res.set("CacheControl", "max-age=86400");
+  res.set("Cache-Control", "max-age=86400");
   res.send("<h1>Daily Quests</h1>");
 });
+
 //Weekly Quest Page
 app.get("/weekly-quests", (req, res) => {
   console.log("Weekly Quest Page");
   //cache information for 1 Week
-  res.set("CacheControl", "max-age=604800");
+  res.set("Cache-Control", "max-age=604800");
   res.send("<h1>Weekly Quests</h1>");
 });
+
 //User Dashboard
 app.get("/user-dashboard", (req, res) => {
   console.log("user dashboard");
   //don't cache due to potentially sensitive data
-  res.set("CacheControl", "no-store");
-  res.send("<h1>User Dashboard</h1>");
+  res.set("Cache-Control", "no-store");
+  res.render("dashboard");
 });
+
 //About Page
 app.get("/about", (req, res) => {
   console.log("About Page");
   //information is unlikely to be change and will not need to be cached
-  res.set("CacheControl", "no-store");
+  res.set("Cache-Control", "no-store");
   res.send("<h1>About Page</h1>");
 });
-
-//add basic middleware
-app.use(helmet()); // I will need to configure helmet more
 
 const options = {
   cert: fs.readFileSync(path.join(__dirname, "./openssl/certificate.pem")),
